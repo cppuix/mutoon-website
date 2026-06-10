@@ -9,7 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ─── DESIGN TOKENS ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════════════ */
 :root {
   --bg-page:        #FAF7EE;
   --bg-card:        #FFFDF6;
@@ -28,10 +30,11 @@
   --radius-card:    8px;
   --radius-pill:    99px;
   --transition:     0.15s ease-out;
-  --shadow-card:    0 1px 4px rgba(139,94,42,0.08), 0 0 0 1px var(--border-default);
 }
 
-/* ─── RESET ──────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   background: var(--bg-page);
@@ -44,7 +47,9 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* ─── LAYOUT HELPERS ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════════════════════════ */
 .container {
   max-width: 900px;
   margin: 0 auto;
@@ -55,7 +60,9 @@ a:hover { text-decoration: underline; }
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════════════════════ */
 .topbar {
   background: var(--bg-card);
   border-bottom: 1px solid var(--border-default);
@@ -82,14 +89,8 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
   flex-shrink: 0;
 }
-.topbar-logo span {
-  color: var(--accent);
-}
-.topbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+.topbar-logo span { color: var(--accent); }
+.topbar-nav { display: flex; align-items: center; gap: 0.5rem; }
 .btn-ghost {
   font-family: var(--font-ui);
   font-size: 12px;
@@ -105,12 +106,16 @@ a:hover { text-decoration: underline; }
 }
 .btn-ghost:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-/* ─── PAGE VIEWS ─────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   PAGE VIEWS
+═══════════════════════════════════════════════════════════ */
 .page { display: none; padding: 2.5rem 0 4rem; animation: fadeIn 0.2s ease-out; }
 .page.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ─── HOME PAGE ──────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════════════════════════ */
 .home-hero {
   text-align: center;
   padding: 3rem 0 2.5rem;
@@ -142,11 +147,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* Search */
-.search-wrap {
-  max-width: 560px;
-  margin: 0 auto;
-  position: relative;
-}
+.search-wrap { max-width: 560px; margin: 0 auto; position: relative; }
 .search-wrap input {
   width: 100%;
   font-family: var(--font-serif);
@@ -162,13 +163,35 @@ a:hover { text-decoration: underline; }
 .search-wrap input::placeholder { color: var(--text-muted); font-style: italic; }
 .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,94,42,0.12); }
 .search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
+  position: absolute; left: 1rem; top: 50%;
   transform: translateY(-50%);
-  color: var(--accent);
-  pointer-events: none;
+  color: var(--accent); pointer-events: none;
 }
+.search-results {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  margin-top: 0.25rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 200;
+  display: none;
+}
+.search-results.active { display: block; }
+.search-result-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-default);
+  transition: background var(--transition);
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover { background: var(--bg-hover); }
+.sr-name { font-weight: 600; color: var(--text-primary); }
+.sr-author { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+.sr-category { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+.search-no-results { padding: 1rem; text-align: center; color: var(--text-muted); font-style: italic; }
 
 /* Category grid */
 .section-label {
@@ -200,8 +223,7 @@ a:hover { text-decoration: underline; }
 }
 .category-card::before {
   content: '';
-  position: absolute;
-  top: 0; left: 0;
+  position: absolute; top: 0; left: 0;
   width: 3px; height: 100%;
   background: var(--accent);
   opacity: 0;
@@ -210,12 +232,7 @@ a:hover { text-decoration: underline; }
 .category-card:hover { background: var(--bg-hover); border-color: var(--border-strong); }
 .category-card:hover::before { opacity: 1; }
 .category-card:hover .card-arrow { transform: translateX(3px); }
-
-.card-icon {
-  font-size: 1.4rem;
-  margin-bottom: 0.6rem;
-  display: block;
-}
+.card-icon { font-size: 1.4rem; margin-bottom: 0.6rem; display: block; }
 .card-title {
   font-family: var(--font-ui);
   font-size: 11px;
@@ -232,11 +249,7 @@ a:hover { text-decoration: underline; }
   color: var(--text-secondary);
   margin-bottom: 0.75rem;
 }
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
 .card-count {
   font-family: var(--font-ui);
   font-size: 11px;
@@ -247,22 +260,18 @@ a:hover { text-decoration: underline; }
   padding: 2px 10px;
   letter-spacing: 0.04em;
 }
-.card-arrow {
-  color: var(--accent);
-  font-size: 0.9rem;
-  transition: transform var(--transition);
-}
+.card-arrow { color: var(--accent); font-size: 0.9rem; transition: transform var(--transition); }
 
-/* ─── ARCHIVE PAGE ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   ARCHIVE PAGE
+═══════════════════════════════════════════════════════════ */
 .page-header {
   margin-bottom: 2rem;
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--border-default);
 }
 .breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: flex; align-items: center; gap: 0.5rem;
   font-family: var(--font-ui);
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -271,16 +280,11 @@ a:hover { text-decoration: underline; }
   margin-bottom: 0.75rem;
 }
 .breadcrumb button {
-  background: none;
-  border: none;
-  color: var(--accent);
-  font: inherit;
-  cursor: pointer;
-  padding: 0;
+  background: none; border: none;
+  color: var(--accent); font: inherit; cursor: pointer; padding: 0;
 }
 .breadcrumb button:hover { text-decoration: underline; }
 .breadcrumb-sep { color: var(--border-strong); }
-
 .page-title {
   font-family: var(--font-serif);
   font-size: 1.5rem;
@@ -307,14 +311,9 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
   border-radius: 6px;
   transition: background var(--transition), padding var(--transition);
+  position: relative;
 }
-.text-item:hover {
-  background: var(--bg-hover);
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-}
+.text-item:hover { background: var(--bg-hover); padding-left: 1rem; padding-right: 1rem; }
 .text-item:hover .text-open-btn { opacity: 1; }
 .text-item-left { min-width: 0; }
 .text-name-ar {
@@ -331,19 +330,30 @@ a:hover { text-decoration: underline; }
   font-size: 0.95rem;
   color: var(--text-primary);
 }
-.text-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
-  align-items: center;
-}
+.text-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.4rem; align-items: center; }
 .text-author {
   font-family: var(--font-ui);
   font-size: 11px;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+.text-structure-pill {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--accent);
+  background: var(--bg-pill);
+  border: 1px solid var(--accent-light);
+  border-radius: var(--radius-pill);
+  padding: 1px 8px;
+  letter-spacing: 0.04em;
+}
+.text-progress-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 0 3px 0 0;
+  transition: width 0.3s;
 }
 .text-open-btn {
   font-family: var(--font-ui);
@@ -363,7 +373,9 @@ a:hover { text-decoration: underline; }
 }
 .text-open-btn:hover { opacity: 1; background: var(--bg-hover); }
 
-/* ─── READING PAGE ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   READING PAGE
+═══════════════════════════════════════════════════════════ */
 .reader-toolbar {
   display: flex;
   align-items: center;
@@ -376,20 +388,26 @@ a:hover { text-decoration: underline; }
 }
 .toolbar-left { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .toolbar-right { display: flex; align-items: center; gap: 0.5rem; }
-
 .toolbar-book-name {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 0.9rem;
   color: var(--text-secondary);
 }
-.mode-toggle {
-  display: flex;
-  gap: 0;
+.bookmark-btn {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  background: none;
   border: 1px solid var(--border-default);
   border-radius: var(--radius-pill);
-  overflow: hidden;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all var(--transition);
 }
+.bookmark-btn.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.mode-toggle { display: flex; gap: 0; border: 1px solid var(--border-default); border-radius: var(--radius-pill); overflow: hidden; }
 .mode-btn {
   font-family: var(--font-ui);
   font-size: 11px;
@@ -402,10 +420,7 @@ a:hover { text-decoration: underline; }
   color: var(--text-muted);
   transition: background var(--transition), color var(--transition);
 }
-.mode-btn.active {
-  background: var(--accent);
-  color: #fff;
-}
+.mode-btn.active { background: var(--accent); color: #fff; }
 .lens-select {
   font-family: var(--font-ui);
   font-size: 11px;
@@ -420,11 +435,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* Reading content */
-.reader-body {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
-}
+.reader-body { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
 .book-title-display {
   font-family: var(--font-serif);
   font-size: 1.3rem;
@@ -444,12 +455,8 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--border-default);
 }
 
-/* Poetry type */
-.poem-unit {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px dashed var(--border-default);
-}
+/* Poetry */
+.poem-unit { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px dashed var(--border-default); }
 .poem-unit:last-child { border-bottom: none; }
 .poem-arabic {
   font-family: var(--font-arabic);
@@ -479,7 +486,7 @@ a:hover { text-decoration: underline; }
   display: block;
 }
 
-/* Prose type */
+/* Prose */
 .chapter-heading {
   font-family: var(--font-ui);
   font-size: 10px;
@@ -492,13 +499,7 @@ a:hover { text-decoration: underline; }
   align-items: center;
   gap: 0.75rem;
 }
-.chapter-heading::before,
-.chapter-heading::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border-default);
-}
+.chapter-heading::before, .chapter-heading::after { content: ''; flex: 1; height: 1px; background: var(--border-default); }
 .chapter-heading-ar {
   font-family: var(--font-arabic);
   font-size: 1rem;
@@ -507,10 +508,7 @@ a:hover { text-decoration: underline; }
   direction: rtl;
   margin-bottom: 1.5rem;
 }
-
-.prose-block {
-  margin-bottom: 1.75rem;
-}
+.prose-block { margin-bottom: 1.75rem; }
 .prose-ar {
   font-family: var(--font-arabic);
   font-size: 1.2rem;
@@ -520,11 +518,16 @@ a:hover { text-decoration: underline; }
   color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
-.prose-footnote-ref {
+.prose-footnote-inline {
   font-family: var(--font-ui);
   font-size: 10px;
-  color: var(--accent);
-  vertical-align: super;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 0.3rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-pill);
+  border-radius: 4px;
+  border-left: 2px solid var(--accent-light);
 }
 .prose-en {
   font-family: var(--font-serif);
@@ -533,7 +536,7 @@ a:hover { text-decoration: underline; }
   line-height: 1.8;
 }
 
-/* Q&A type */
+/* Q&A */
 .qa-unit {
   margin-bottom: 1.5rem;
   padding: 1.25rem 1.5rem;
@@ -568,17 +571,13 @@ a:hover { text-decoration: underline; }
   line-height: 1.7;
   margin-bottom: 1rem;
 }
-.qa-divider {
-  border: none;
-  border-top: 1px dashed var(--border-default);
-  margin: 1rem 0;
-}
+.qa-divider { border: none; border-top: 1px dashed var(--border-default); margin: 1rem 0; }
 
-/* Export mode */
+/* ═══════════════════════════════════════════════════════════
+   EXPORT MODE
+═══════════════════════════════════════════════════════════ */
 .export-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  display: flex; align-items: center; gap: 0.75rem;
   padding: 0.75rem 1.5rem;
   background: var(--bg-page);
   border-bottom: 1px solid var(--border-default);
@@ -613,11 +612,7 @@ a:hover { text-decoration: underline; }
   transition: opacity var(--transition);
 }
 .export-proceed-btn:hover { opacity: 0.85; }
-.selected-count {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  color: var(--text-muted);
-}
+.selected-count { font-family: var(--font-ui); font-size: 11px; color: var(--text-muted); }
 
 .export-unit {
   border: 1px solid var(--border-default);
@@ -628,9 +623,7 @@ a:hover { text-decoration: underline; }
 }
 .export-unit.selected { border-color: var(--accent); }
 .export-unit-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  display: flex; align-items: center; gap: 0.75rem;
   padding: 0.75rem 1rem;
   background: var(--bg-card);
   cursor: pointer;
@@ -638,12 +631,7 @@ a:hover { text-decoration: underline; }
   user-select: none;
 }
 .export-unit.selected .export-unit-header { background: var(--bg-pill); }
-.export-checkbox {
-  width: 16px; height: 16px;
-  accent-color: var(--accent);
-  cursor: pointer;
-  flex-shrink: 0;
-}
+.export-checkbox { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
 .export-unit-label {
   font-family: var(--font-ui);
   font-size: 11px;
@@ -654,7 +642,9 @@ a:hover { text-decoration: underline; }
 }
 .export-unit-body { padding: 1rem; }
 
-/* Customization / Download page */
+/* ═══════════════════════════════════════════════════════════
+   CUSTOMIZE / DOWNLOAD PAGE
+═══════════════════════════════════════════════════════════ */
 .config-section { margin-bottom: 2rem; }
 .config-title {
   font-family: var(--font-ui);
@@ -668,9 +658,7 @@ a:hover { text-decoration: underline; }
 }
 .config-options { display: flex; flex-direction: column; gap: 0.6rem; }
 .config-option {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
+  display: flex; align-items: center; gap: 0.65rem;
   font-family: var(--font-serif);
   font-size: 0.9rem;
   color: var(--text-primary);
@@ -701,11 +689,7 @@ a:hover { text-decoration: underline; }
   gap: 0;
   background: var(--bg-card);
 }
-.preview-col {
-  padding: 1.25rem;
-  font-size: 0.82rem;
-  line-height: 1.8;
-}
+.preview-col { padding: 1.25rem; font-size: 0.82rem; line-height: 1.8; }
 .preview-col:first-child { border-right: 1px solid var(--border-default); }
 .preview-col.ar {
   font-family: var(--font-arabic);
@@ -718,6 +702,9 @@ a:hover { text-decoration: underline; }
   font-style: italic;
   color: var(--text-secondary);
 }
+.print-endnotes-section { padding: 1.25rem; border-top: 1px solid var(--border-default); }
+.print-endnotes-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 0.75rem; font-family: var(--font-ui); }
+.print-endnote-item { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; line-height: 1.6; }
 
 .download-btn {
   width: 100%;
@@ -736,7 +723,65 @@ a:hover { text-decoration: underline; }
 }
 .download-btn:hover { opacity: 0.88; }
 
-/* ─── ORNAMENTAL DIVIDER ──────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   BOOKMARKS PANEL
+═══════════════════════════════════════════════════════════ */
+.bookmarks-panel {
+  position: fixed; top: 0; right: 0;
+  width: 320px; height: 100vh;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-default);
+  box-shadow: -2px 0 12px rgba(0,0,0,0.06);
+  z-index: 300;
+  transform: translateX(100%);
+  transition: transform 0.25s ease-out;
+  display: flex; flex-direction: column;
+}
+.bookmarks-panel.open { transform: translateX(0); }
+.bookmarks-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,18,8,0.3);
+  z-index: 299;
+  display: none;
+}
+.bookmarks-overlay.active { display: block; }
+.bookmarks-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-default);
+}
+.bookmarks-panel-title {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.bookmarks-panel-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); }
+.bookmarks-panel-list { flex: 1; overflow-y: auto; padding: 0.75rem 0; }
+.bookmark-item {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-default);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.bookmark-item:hover { background: var(--bg-hover); }
+.bookmark-item .bm-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
+.bookmark-item .bm-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+.bookmark-item .bm-date { font-size: 0.65rem; color: var(--accent); margin-top: 0.15rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.bookmarks-empty { padding: 2rem; text-align: center; color: var(--text-muted); font-style: italic; }
+
+/* ═══════════════════════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════════════════════ */
+.reading-progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 400;
+  transition: width 0.1s linear;
+}
 .ornament {
   text-align: center;
   color: var(--accent);
@@ -746,12 +791,8 @@ a:hover { text-decoration: underline; }
   opacity: 0.5;
   user-select: none;
 }
-
-/* ─── TOAST NOTIFICATION ─────────────────────────────────── */
 .toast {
-  position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
+  position: fixed; bottom: 1.5rem; left: 50%;
   transform: translateX(-50%) translateY(20px);
   background: var(--text-primary);
   color: var(--bg-page);
@@ -767,6 +808,37 @@ a:hover { text-decoration: underline; }
   white-space: nowrap;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══════════════════════════════════════════════════════════
+   PRINT STYLESHEET
+═══════════════════════════════════════════════════════════ */
+@media print {
+  body { background: white !important; color: black !important; font-size: 11pt; }
+  .topbar, .reader-toolbar, .export-toolbar, .bookmarks-panel,
+  .bookmarks-overlay, .reading-progress-bar, .toast,
+  .breadcrumb, .download-btn, .config-section,
+  #page-customize .page-header { display: none !important; }
+
+  #page-customize { display: block !important; padding: 0 !important; animation: none !important; }
+  .container { max-width: 100% !important; padding: 0 !important; }
+  .preview-box { border: none !important; page-break-inside: avoid; }
+  .preview-content { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1cm !important; background: white !important; }
+  .preview-col { padding: 0 !important; font-size: 10pt !important; line-height: 1.8 !important; }
+  .preview-col:first-child { border-right: 1px solid #ccc !important; padding-right: 0.5cm !important; }
+  .preview-col.en { padding-left: 0.5cm !important; }
+  .preview-col.ar { font-family: 'Noto Naskh Arabic', serif !important; direction: rtl !important; text-align: right !important; font-size: 12pt !important; }
+  .preview-col.en { font-family: 'Libre Baskerville', Georgia, serif !important; font-style: italic !important; }
+  .preview-box-title { font-size: 14pt !important; font-weight: bold !important; text-align: center !important; margin-bottom: 1cm !important; border-bottom: 2px solid black !important; padding-bottom: 0.5cm !important; background: none !important; color: black !important; }
+  .preview-interleaved { display: block !important; }
+  .preview-interleaved .preview-col { display: block !important; width: 100% !important; padding: 0 !important; border: none !important; }
+  .preview-interleaved .preview-col.ar { margin-bottom: 0.3cm !important; }
+  .preview-interleaved .preview-col.en { margin-bottom: 0.6cm !important; padding-left: 0.5cm !important; border-left: 2px solid #ccc !important; }
+  .print-footnote { font-size: 8pt !important; color: #555 !important; margin-top: 0.2cm !important; font-style: normal !important; }
+  .print-endnotes-section { page-break-before: always; margin-top: 1cm; }
+  .print-endnotes-title { font-size: 12pt; font-weight: bold; border-bottom: 1px solid black; margin-bottom: 0.5cm; }
+  .print-endnote-item { font-size: 9pt; margin-bottom: 0.3cm; }
+  @page { size: A4; margin: 2cm; }
+}
 </style>
 </head>
 <body>
@@ -774,27 +846,24 @@ a:hover { text-decoration: underline; }
 <!-- ═══ TOPBAR ═══════════════════════════════════════════════ -->
 <header class="topbar" role="banner">
   <div class="topbar-inner">
-    <a class="topbar-logo" href="#" onclick="showPage('home'); return false;">
-      MUTOON<span>.</span>COM
-    </a>
+    <a class="topbar-logo" href="#" data-nav="home">MUTOON<span>.</span>COM</a>
     <nav class="topbar-nav" aria-label="Main navigation">
-      <button class="btn-ghost" onclick="showPage('home')">Library</button>
-      <button class="btn-ghost">Account</button>
+      <button class="btn-ghost" data-nav="home">Library</button>
+      <button class="btn-ghost" id="btn-bookmarks-panel">Bookmarks</button>
     </nav>
   </div>
 </header>
 
+<!-- ═══ READING PROGRESS BAR ════════════════════════════════ -->
+<div class="reading-progress-bar" id="reading-progress-bar" style="width:0%;display:none;"></div>
+
 <!-- ═══ PAGE: HOME ══════════════════════════════════════════ -->
 <main id="page-home" class="page active">
   <div class="container">
-
-    <!-- Hero -->
     <section class="home-hero" aria-labelledby="home-heading">
       <p class="home-eyebrow">Digital Library of Islamic Sciences</p>
       <h1 class="home-title" id="home-heading">The Foundational Text Library</h1>
       <p class="home-subtitle">Explore the classical <em>mutoon</em> — read, study, and export</p>
-
-      <!-- Search -->
       <div class="search-wrap" role="search">
         <span class="search-icon" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
@@ -802,68 +871,14 @@ a:hover { text-decoration: underline; }
           </svg>
         </span>
         <label for="global-search" class="visually-hidden">Search texts, keywords, authors, or subjects</label>
-        <input
-          id="global-search"
-          type="search"
-          placeholder="Search texts — e.g. Al-Bayquniyyah, Thalaathat Al-Usool…"
-          oninput="handleSearch(this.value)"
-          autocomplete="off"
-        >
+        <input id="global-search" type="search" placeholder="Search texts — e.g. Al-Bayquniyyah, Thalaathat Al-Usool…" autocomplete="off">
+        <div class="search-results" id="search-results"></div>
       </div>
     </section>
-
-    <!-- Categories -->
     <section aria-labelledby="explore-label">
       <p class="section-label" id="explore-label">Explore by Science — <em>'Uloom</em></p>
-      <div class="category-grid" role="list">
-
-        <div class="category-card" role="listitem" onclick="showArchive('aqeedah')" tabindex="0"
-             onkeydown="if(event.key==='Enter')showArchive('aqeedah')">
-          <span class="card-icon" aria-hidden="true">📖</span>
-          <p class="card-title">'Aqeedah &amp; Manhaj</p>
-          <p class="card-subtitle">Theology &amp; Methodology</p>
-          <div class="card-footer">
-            <span class="card-count">7 texts</span>
-            <span class="card-arrow" aria-hidden="true">→</span>
-          </div>
-        </div>
-
-        <div class="category-card" role="listitem" onclick="showArchive('hadith')" tabindex="0"
-             onkeydown="if(event.key==='Enter')showArchive('hadith')">
-          <span class="card-icon" aria-hidden="true">🔍</span>
-          <p class="card-title">Hadith &amp; Mustalah</p>
-          <p class="card-subtitle">Narrations &amp; Terminology</p>
-          <div class="card-footer">
-            <span class="card-count">4 texts</span>
-            <span class="card-arrow" aria-hidden="true">→</span>
-          </div>
-        </div>
-
-        <div class="category-card" role="listitem" onclick="showArchive('fiqh')" tabindex="0"
-             onkeydown="if(event.key==='Enter')showArchive('fiqh')">
-          <span class="card-icon" aria-hidden="true">⚖️</span>
-          <p class="card-title">Fiqh &amp; Usool</p>
-          <p class="card-subtitle">Law &amp; Legal Maxims</p>
-          <div class="card-footer">
-            <span class="card-count">3 texts</span>
-            <span class="card-arrow" aria-hidden="true">→</span>
-          </div>
-        </div>
-
-        <div class="category-card" role="listitem" onclick="showArchive('language')" tabindex="0"
-             onkeydown="if(event.key==='Enter')showArchive('language')">
-          <span class="card-icon" aria-hidden="true">🌿</span>
-          <p class="card-title">Language &amp; Tools</p>
-          <p class="card-subtitle">Grammar, Tajweed, etc.</p>
-          <div class="card-footer">
-            <span class="card-count">3 texts</span>
-            <span class="card-arrow" aria-hidden="true">→</span>
-          </div>
-        </div>
-
-      </div>
+      <div class="category-grid" id="category-grid" role="list"></div>
     </section>
-
   </div>
 </main>
 
@@ -872,43 +887,38 @@ a:hover { text-decoration: underline; }
   <div class="container">
     <header class="page-header">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <button onclick="showPage('home')" aria-label="Back to home">← Home</button>
+        <button data-nav="home" aria-label="Back to home">← Home</button>
         <span class="breadcrumb-sep" aria-hidden="true">/</span>
-        <span id="archive-category-label">Hadith &amp; Mustalah</span>
+        <span id="archive-category-label"></span>
       </nav>
-      <h1 class="page-title" id="archive-title">Foundational Texts in Hadith &amp; Mustalah</h1>
-      <p class="page-desc">Select a text to read or configure for study sheet export</p>
+      <h1 class="page-title" id="archive-title"></h1>
+      <p class="page-desc" id="archive-desc"></p>
     </header>
-
-    <ul class="text-list" id="archive-list" aria-label="Available texts">
-      <!-- Populated by JS -->
-    </ul>
+    <ul class="text-list" id="archive-list" aria-label="Available texts"></ul>
   </div>
 </main>
 
 <!-- ═══ PAGE: READER ════════════════════════════════════════ -->
 <main id="page-reader" class="page" aria-label="Text reader">
-
   <div class="reader-toolbar" role="toolbar" aria-label="Reader controls">
     <div class="toolbar-left">
-      <button class="btn-ghost" onclick="showArchive(currentArchive)" aria-label="Back to library">← Library</button>
+      <button class="btn-ghost" id="btn-back-to-archive" aria-label="Back to library">← Library</button>
+      <button class="bookmark-btn" id="bookmark-toggle-btn" aria-label="Bookmark current text">☆ Bookmark</button>
       <span class="toolbar-book-name" id="reader-book-name"></span>
     </div>
     <div class="toolbar-right">
       <label for="lens-select" class="visually-hidden">Language view</label>
-      <select class="lens-select" id="lens-select" onchange="updateLens(this.value)">
+      <select class="lens-select" id="lens-select">
         <option value="both">Arabic + English</option>
         <option value="arabic">Arabic only</option>
         <option value="english">English only</option>
       </select>
       <div class="mode-toggle" role="group" aria-label="View mode">
-        <button class="mode-btn active" id="btn-read" onclick="setMode('reading')">Reading</button>
-        <button class="mode-btn" id="btn-export" onclick="setMode('export')">Export</button>
+        <button class="mode-btn active" id="btn-read">Reading</button>
+        <button class="mode-btn" id="btn-export">Export</button>
       </div>
     </div>
   </div>
-
-  <!-- Reading mode -->
   <div id="reading-mode">
     <div class="reader-body">
       <h2 class="book-title-display" id="reader-title"></h2>
@@ -916,28 +926,34 @@ a:hover { text-decoration: underline; }
       <div id="reader-content"></div>
     </div>
   </div>
-
-  <!-- Export mode -->
   <div id="export-mode" style="display:none;">
     <div class="export-toolbar" role="toolbar" aria-label="Export controls">
-      <button class="export-action-btn" onclick="selectAllExport()">Select all</button>
-      <button class="export-action-btn" onclick="clearExport()">Clear</button>
+      <button class="export-action-btn" id="btn-select-all">Select all</button>
+      <button class="export-action-btn" id="btn-clear-export">Clear</button>
       <span class="selected-count" id="selected-count" aria-live="polite">0 units selected</span>
-      <button class="export-proceed-btn" onclick="showPage('customize')">Proceed to styling →</button>
+      <button class="export-proceed-btn" id="btn-proceed-customize">Proceed to styling →</button>
     </div>
     <div class="container" style="padding-top:1.5rem;">
       <div id="export-content"></div>
     </div>
   </div>
-
 </main>
 
 <!-- ═══ PAGE: CUSTOMIZE ═════════════════════════════════════ -->
 <main id="page-customize" class="page" aria-label="Export customization">
+  <!-- Hidden print-only content -->
+  <div id="print-content" style="display:none;">
+    <div class="preview-box" id="print-preview-box">
+      <div class="preview-box-title" id="print-preview-title"></div>
+      <div class="preview-content" id="print-preview-content"></div>
+      <div class="print-endnotes-section" id="print-endnotes-section" style="display:none;"></div>
+    </div>
+  </div>
+
   <div class="container">
     <header class="page-header">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <button onclick="showPage('reader')">← Back to text</button>
+        <button data-nav="reader" aria-label="Back to text">← Back to text</button>
         <span class="breadcrumb-sep" aria-hidden="true">/</span>
         <span>Export Manager</span>
       </nav>
@@ -945,522 +961,69 @@ a:hover { text-decoration: underline; }
       <p class="page-desc">Choose layout, footnotes, and format before downloading</p>
     </header>
 
-    <!-- Step 1 -->
     <section class="config-section" aria-labelledby="step1-label">
       <p class="config-title" id="step1-label">Step 1 — Layout</p>
-      <div class="config-options" role="radiogroup" aria-labelledby="step1-label">
-        <label class="config-option">
-          <input type="radio" name="layout" value="parallel" checked> Parallel columns (Arabic right / English left)
-        </label>
-        <label class="config-option">
-          <input type="radio" name="layout" value="interleaved"> Interleaved lines (Arabic above / English below)
-        </label>
-        <label class="config-option">
-          <input type="radio" name="layout" value="arabic-only"> Arabic text only
-        </label>
-        <label class="config-option">
-          <input type="radio" name="layout" value="english-only"> English translation only
-        </label>
+      <div class="config-options" role="radiogroup" aria-labelledby="step1-label" id="layout-options">
+        <label class="config-option"><input type="radio" name="layout" value="parallel" checked> Parallel columns (Arabic right / English left)</label>
+        <label class="config-option"><input type="radio" name="layout" value="interleaved"> Interleaved lines (Arabic above / English below)</label>
+        <label class="config-option"><input type="radio" name="layout" value="arabic-only"> Arabic text only</label>
+        <label class="config-option"><input type="radio" name="layout" value="english-only"> English translation only</label>
       </div>
     </section>
 
-    <!-- Step 2 -->
     <section class="config-section" aria-labelledby="step2-label">
       <p class="config-title" id="step2-label">Step 2 — Footnote placement</p>
-      <div class="config-options" role="radiogroup" aria-labelledby="step2-label">
-        <label class="config-option">
-          <input type="radio" name="footnotes" value="inline"> Inline notes (directly under sentences in brackets)
-        </label>
-        <label class="config-option">
-          <input type="radio" name="footnotes" value="endnotes" checked> Endnotes (numbered list at document end)
-        </label>
-        <label class="config-option">
-          <input type="radio" name="footnotes" value="none"> Remove all footnotes
-        </label>
+      <div class="config-options" role="radiogroup" aria-labelledby="step2-label" id="footnote-options">
+        <label class="config-option"><input type="radio" name="footnotes" value="inline"> Inline notes (directly under sentences)</label>
+        <label class="config-option"><input type="radio" name="footnotes" value="endnotes" checked> Endnotes (numbered list at document end)</label>
+        <label class="config-option"><input type="radio" name="footnotes" value="none"> Remove all footnotes</label>
       </div>
     </section>
 
-    <!-- Step 3 -->
     <section class="config-section" aria-labelledby="step3-label">
       <p class="config-title" id="step3-label">Step 3 — Download format</p>
-      <div class="config-options">
-        <label class="config-option">
-          <input type="radio" name="format" value="pdf" checked> PDF document (.pdf) — embed high-precision Uthmani fonts
-        </label>
-        <label class="config-option">
-          <input type="radio" name="format" value="docx"> Microsoft Word (.docx)
-        </label>
+      <div class="config-options" id="format-options">
+        <label class="config-option"><input type="radio" name="format" value="pdf" checked> PDF document (.pdf) — opens print dialog</label>
+        <label class="config-option"><input type="radio" name="format" value="docx"> Microsoft Word (.docx) — downloads directly</label>
+        <label class="config-option"><input type="radio" name="format" value="markdown"> Markdown (.md) — for Obsidian, Notion, etc.</label>
+        <label class="config-option"><input type="radio" name="format" value="clipboard"> Copy to clipboard (formatted text)</label>
       </div>
     </section>
 
-    <!-- Live preview -->
     <section class="config-section" aria-labelledby="preview-label">
       <p class="config-title" id="preview-label">Live preview</p>
-      <div class="preview-box">
-        <div class="preview-box-title">Al-Bayquniyyah — parallel columns</div>
-        <div class="preview-content">
-          <div class="preview-col ar">
-            <div>أَلْحَمْدُ لِلهِ مُصَلِّيًا عَلَى مُحَمَّدٍ خَيْرِ نَبِيٍّ أُرْسِلَا</div>
-            <div style="margin-top:1rem;">وَذِي مِنْ أَقْسَامِ الحَدِيثِ عِدَّةٌ وَكُلٌّ وَاجِدٍ آتِي وَحَدَّهٌ</div>
-          </div>
-          <div class="preview-col en">
-            <div>Praise is due to Allah, while sending blessings upon Muhammad, the best of Prophets sent forth.</div>
-            <div style="margin-top:1rem;">And this poem consists of a number of categories of Hadith, and each one is coming with its definition.</div>
-          </div>
+      <div class="preview-box" id="preview-box">
+        <div class="preview-box-title" id="preview-box-title">Preview</div>
+        <div class="preview-content" id="preview-content">
+          <div class="preview-col ar" id="preview-ar"></div>
+          <div class="preview-col en" id="preview-en"></div>
         </div>
+        <div class="print-endnotes-section" id="preview-endnotes" style="display:none;"></div>
       </div>
     </section>
 
-    <button class="download-btn" onclick="handleDownload()">
+    <button class="download-btn" id="btn-download">
       Generate &amp; download my study sheet ↓
     </button>
-
   </div>
 </main>
+
+<!-- ═══ BOOKMARKS PANEL ═════════════════════════════════════ -->
+<div class="bookmarks-overlay" id="bookmarks-overlay"></div>
+<aside class="bookmarks-panel" id="bookmarks-panel" aria-label="Bookmarks">
+  <div class="bookmarks-panel-header">
+    <span class="bookmarks-panel-title">Your Bookmarks</span>
+    <button class="bookmarks-panel-close" id="btn-bookmarks-close" aria-label="Close bookmarks">×</button>
+  </div>
+  <div class="bookmarks-panel-list" id="bookmarks-list">
+    <div class="bookmarks-empty">No bookmarks yet. Bookmark a text while reading.</div>
+  </div>
+</aside>
 
 <!-- ═══ TOAST ════════════════════════════════════════════════ -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════════════════════════ -->
-<script>
-/* ── Data ────────────────────────────────────────────────── */
-const LIBRARY = {
-  hadith: {
-    label: "Hadith & Mustalah",
-    title: "Foundational Texts in Hadith & Mustalah",
-    texts: [
-      {
-        id: "bayquniyyah",
-        nameAr: "الْبَيْقُونِيَّة",
-        nameEn: "Al-Bayquniyyah",
-        author: "Al-Bayquni",
-        structure: "Classical Rhymed Poetry Couplets",
-        type: "poetry",
-        content: [
-          {
-            lineNum: 1,
-            arabic: "أَلْحَمْدُ لِلهِ مُصَلِّيًا عَلَى\nمُحَمَّدٍ خَيْرِ نَبِيٍّ أُرْسِلَا",
-            english: "Praise is due to Allah, while sending blessings upon\nMuhammad, the best of Prophets sent forth."
-          },
-          {
-            lineNum: 2,
-            arabic: "وَذِي مِنْ أَقْسَامِ الحَدِيثِ عِدَّةٌ\nوَكُلٌّ وَاجِدٍ آتِي وَحَدَّهٌ",
-            english: "And this poem consists of a number of categories of Hadith,\nand each and every one is coming with its definition."
-          },
-          {
-            lineNum: 3,
-            arabic: "أَوَّلُهَا: الصَّحِيحُ، وَهْوَ مَا اتَّصَلْ\nإِسْنَادُهُ، وَلَمْ يَشُذَّ أَوْ يُعَلّ",
-            english: "The first of them is the Authentic (Sahih), and it is that\nwhose chain of narration is continuous, and is neither anomalous nor defective."
-          },
-          {
-            lineNum: 4,
-            arabic: "وَالحَسَنُ المَعْرُوفُ طُرُقًا وَغَدَتْ\nرِجَالُهُ لا كَالصَّحِيحِ اشْتُهِرَتْ",
-            english: "The Hasan (Good) is that whose paths are well-known,\nthough its narrators are not as renowned as those of the Sahih."
-          },
-          {
-            lineNum: 5,
-            arabic: "وَكُلُّ مَا عَنْ رُتْبَةِ الحُسْنِ قَصُرْ\nفَهُوَ الضَّعِيفُ وَهْوَ أَقْسَامًا كُثُرْ",
-            english: "And whatever falls short of the rank of Hasan\nis the Weak (Da'if), and it has many subcategories."
-          }
-        ]
-      },
-      {
-        id: "arbaoon",
-        nameAr: "الأَرْبَعُونَ النَّوَوِيَّة",
-        nameEn: "Al-Arba'oon Al-Nawawiyyah",
-        author: "Imam an-Nawawi",
-        structure: "Continuous Prose — Prophetic Traditions",
-        type: "prose_chaptered",
-        chapters: [
-          {
-            titleAr: "الحَدِيثُ الأَوَّل",
-            titleEn: "The First Hadith",
-            blocks: [
-              {
-                id: "arb_01_01",
-                arabic: "عَنْ أَمِيرِ المُؤْمِنِينَ أَبِي حَفْصٍ عُمَرَ بنِ الخَطَّابِ رَضِيَ اللهُ عَنْهُ قَالَ: سَمِعْتُ رَسُولَ اللهِ ﷺ يَقُولُ: «إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ»",
-                english: "On the authority of the Commander of the Faithful, Abu Hafs 'Umar ibn al-Khattab, who said: I heard the Messenger of Allah ﷺ say: \"Actions are according to their intentions.\""
-              },
-              {
-                id: "arb_01_02",
-                arabic: "«وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى، فَمَنْ كَانَتْ هِجْرَتُهُ إِلَى اللهِ وَرَسُولِهِ فَهِجْرَتُهُ إِلَى اللهِ وَرَسُولِهِ»",
-                english: "\"And every person will have only what they intended. So whoever emigrated for Allah and His Messenger, their emigration is for Allah and His Messenger.\""
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  aqeedah: {
-    label: "'Aqeedah & Manhaj",
-    title: "Foundational Texts in 'Aqeedah & Manhaj",
-    texts: [
-      {
-        id: "wasitiyyah",
-        nameAr: "العَقِيدَةُ الوَاسِطِيَّة",
-        nameEn: "Al-'Aqeedah Al-Wasitiyyah",
-        author: "Ibn Taymiyyah",
-        structure: "Chaptered Prose — Theological Doctrine",
-        type: "prose_chaptered",
-        chapters: [
-          {
-            titleAr: "بَابُ صِفَاتِ اللهِ",
-            titleEn: "Chapter: Allah's Attributes",
-            blocks: [
-              {
-                id: "was_02_01",
-                arabic: "تَعَالَى: ﴿وَلِلَّهِ الْمَثَلُ الْأَعْلَىٰ وَهُوَ الْعَزِيزُ الْحَكِيمُ﴾ [سورة النحل، آية ٦٠]",
-                english: "And the saying of the Most High: \"And for Allah is the highest attribute. And He is the Exalted in Might, the Wise.\" [Surah An-Nahl, Ayah 60]"
-              },
-              {
-                id: "was_02_02",
-                arabic: "وَقَوْلُهُ تَعَالَى: ﴿لَيْسَ كَمِثْلِهِ شَيْءٌ وَهُوَ السَّمِيعُ الْبَصِيرُ﴾ [سورة الشورى، آية ١١]",
-                english: "And His saying, the Most High: \"There is nothing like unto Him, and He is the Hearing, the Seeing.\" [Surah Ash-Shura, Ayah 11]"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: "usool",
-        nameAr: "ثَلاثَةُ الأُصُول",
-        nameEn: "Thalaathat Al-Usool",
-        author: "Muhammad ibn 'Abd al-Wahhab",
-        structure: "Continuous Prose — Fundamentals of Faith",
-        type: "prose_continuous",
-        blocks: [
-          {
-            id: "usool_01_01",
-            arabic: "اعْلَمْ رَحِمَكَ اللهُ أَنَّهُ يَجِبُ عَلَيْنَا تَعَلُّمُ أَرْبَعِ مَسَائِلَ. الأُولَى: العِلْمُ؛ وَهُوَ مَعْرِفَةُ اللهِ، وَمَعْرِفَةُ نَبِيِّهِ، وَمَعْرِفَةُ دِينِ الإِسْلَامِ بِالأَدِلَّةِ.",
-            english: "Know, may Allah have mercy on you, that it is obligatory upon us to learn four matters. The first matter is knowledge; which is knowledge of Allah, knowledge of His Prophet, and knowledge of the religion of Islam with evidences."
-          },
-          {
-            id: "usool_01_02",
-            arabic: "وَالدَّلِيلُ قَوْلُهُ تَعَالَى: ﴿وَالْعَصْرِ (١) إِنَّ الْإِنسَانَ لَفِي خُسْرٍ (٢) إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ﴾ (٣)",
-            english: "And the evidence is the saying of the Most High: \"By time, indeed, mankind is in loss, except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.\""
-          }
-        ]
-      }
-    ]
-  },
-  fiqh: {
-    label: "Fiqh & Usool",
-    title: "Foundational Texts in Fiqh & Usool",
-    texts: [
-      {
-        id: "hajj_qa",
-        nameAr: "أَسْئِلَةُ الحَجّ",
-        nameEn: "As'ilat Al-Hajj",
-        author: "Various Scholars",
-        structure: "Question & Answer — Hajj Rulings",
-        type: "qa",
-        units: [
-          {
-            id: "hajj_qa_04",
-            questionAr: "سَأَلَ: مَا حُكْمُ مَنْ تَرَكَ طَوَافَ الإِفَاضَةِ لِلْحَاجّ؟",
-            questionEn: "What is the ruling on a pilgrim who omits the Tawaf al-Ifadah?",
-            answerAr: "جَوَابٌ: طَوَافُ الإِفَاضَةِ رُكْنٌ مِنْ أَرْكَانِ الحَجِّ لَا صِحَّةَ لَهُ إِلَّا بِهِ.",
-            answerEn: "Tawaf al-Ifadah is a core pillar among the pillars of Hajj; the pilgrimage is entirely invalid without it."
-          },
-          {
-            id: "hajj_qa_05",
-            questionAr: "سَأَلَ: مَا حُكْمُ صِيَامِ يَوْمِ عَرَفَةَ لِلْحَاجّ؟",
-            questionEn: "What is the ruling on fasting the Day of Arafah for a pilgrim?",
-            answerAr: "جَوَابٌ: يُسْتَحَبُّ الفِطْرُ لِلْحَاجِّ بِعَرَفَةَ تَقْوِيَةً لَهُ عَلَى الدُّعَاءِ.",
-            answerEn: "It is recommended for the pilgrim at Arafah not to fast, so as to maintain their strength for making supplications."
-          }
-        ]
-      }
-    ]
-  },
-  language: {
-    label: "Language & Tools",
-    title: "Language Tools & Tajweed",
-    texts: [
-      {
-        id: "jazariyyah",
-        nameAr: "المُقَدِّمَةُ الجَزَرِيَّة",
-        nameEn: "Al-Muqaddimah Al-Jazariyyah",
-        author: "Ibn al-Jazari",
-        structure: "Classical Rhymed Poetry Couplets — Tajweed",
-        type: "poetry",
-        content: [
-          {
-            lineNum: 1,
-            arabic: "يَقُولُ رَاجِي عَفْوِ رَبٍّ سَامِعِ\nمُحَمَّدُ بنُ الجَزَرِيِّ الشَّافِعِي",
-            english: "Says he who hopes for the pardon of a Hearing Lord,\nMuhammad, the son of al-Jazari, of the Shafi'i school."
-          },
-          {
-            lineNum: 2,
-            arabic: "وَبَعْدُ إِنَّ هَذِهِ مُقَدِّمَةٌ\nفِيمَا عَلَى قَارِئِهِ أَنْ يَعْلَمَهُ",
-            english: "And thereafter, this is a primer\nin what the reciter must know."
-          }
-        ]
-      }
-    ]
-  }
-};
-
-/* ── State ───────────────────────────────────────────────── */
-let currentArchive = "hadith";
-let currentText = null;
-let currentMode = "reading";
-let currentLens = "both";
-let selectedExportIds = new Set();
-
-/* ── Navigation ──────────────────────────────────────────── */
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + pageId).classList.add('active');
-}
-
-function showArchive(category) {
-  currentArchive = category;
-  const data = LIBRARY[category];
-  if (!data) return;
-
-  document.getElementById('archive-category-label').textContent = data.label;
-  document.getElementById('archive-title').textContent = data.title;
-
-  const list = document.getElementById('archive-list');
-  list.innerHTML = '';
-
-  data.texts.forEach(text => {
-    const li = document.createElement('li');
-    li.className = 'text-item';
-    li.setAttribute('role', 'listitem');
-    li.setAttribute('tabindex', '0');
-    li.setAttribute('aria-label', `Open ${text.nameEn}`);
-    li.innerHTML = `
-      <div class="text-item-left">
-        <div class="text-name-ar">${text.nameAr}</div>
-        <div class="text-name-en">${text.nameEn}</div>
-        <div class="text-meta">
-          <span class="text-author">${text.author}</span>
-          <span class="fl-cat-pill">${text.structure}</span>
-        </div>
-      </div>
-      <button class="text-open-btn" aria-label="Open ${text.nameEn}">Open →</button>
-    `;
-    li.addEventListener('click', () => openReader(category, text.id));
-    li.addEventListener('keydown', e => { if (e.key === 'Enter') openReader(category, text.id); });
-    list.appendChild(li);
-  });
-
-  showPage('archive');
-}
-
-function openReader(category, textId) {
-  const data = LIBRARY[category];
-  const text = data.texts.find(t => t.id === textId);
-  if (!text) return;
-
-  currentText = text;
-  currentMode = "reading";
-  selectedExportIds.clear();
-
-  document.getElementById('reader-book-name').textContent = text.nameEn;
-  document.getElementById('reader-title').textContent = text.nameEn;
-  document.getElementById('reader-author').textContent = text.author;
-
-  renderReadingContent(text);
-  renderExportContent(text);
-  setMode('reading');
-  showPage('reader');
-}
-
-/* ── Rendering ───────────────────────────────────────────── */
-function renderReadingContent(text) {
-  const container = document.getElementById('reader-content');
-  container.innerHTML = '';
-
-  if (text.type === 'poetry') {
-    text.content.forEach(unit => {
-      const div = document.createElement('div');
-      div.className = 'poem-unit';
-      div.innerHTML = `
-        <span class="line-number">Line ${unit.lineNum}</span>
-        <div class="poem-arabic" ${currentLens === 'english' ? 'style="display:none"' : ''}>${unit.arabic.replace(/\n/g,'<br>')}</div>
-        <div class="poem-translation" ${currentLens === 'arabic' ? 'style="display:none"' : ''}>${unit.english.replace(/\n/g,'<br>')}</div>
-      `;
-      container.appendChild(div);
-    });
-
-  } else if (text.type === 'prose_chaptered') {
-    text.chapters.forEach(ch => {
-      const chDiv = document.createElement('div');
-      if (currentLens !== 'english') {
-        const arHead = document.createElement('p');
-        arHead.className = 'chapter-heading-ar';
-        arHead.textContent = ch.titleAr;
-        chDiv.appendChild(arHead);
-      }
-      const enHead = document.createElement('div');
-      enHead.className = 'chapter-heading';
-      enHead.textContent = ch.titleEn;
-      if (currentLens !== 'arabic') chDiv.appendChild(enHead);
-
-      ch.blocks.forEach(block => {
-        const bDiv = document.createElement('div');
-        bDiv.className = 'prose-block';
-        bDiv.innerHTML = `
-          <div class="prose-ar" ${currentLens === 'english' ? 'style="display:none"' : ''}>${block.arabic}</div>
-          <div class="prose-en" ${currentLens === 'arabic' ? 'style="display:none"' : ''}>${block.english}</div>
-        `;
-        chDiv.appendChild(bDiv);
-      });
-      container.appendChild(chDiv);
-    });
-
-  } else if (text.type === 'prose_continuous') {
-    text.blocks.forEach(block => {
-      const bDiv = document.createElement('div');
-      bDiv.className = 'prose-block';
-      bDiv.innerHTML = `
-        <div class="prose-ar" ${currentLens === 'english' ? 'style="display:none"' : ''}>${block.arabic}</div>
-        <div class="prose-en" ${currentLens === 'arabic' ? 'style="display:none"' : ''}>${block.english}</div>
-      `;
-      container.appendChild(bDiv);
-    });
-
-  } else if (text.type === 'qa') {
-    text.units.forEach((unit, i) => {
-      const div = document.createElement('div');
-      div.className = 'qa-unit';
-      div.innerHTML = `
-        <p class="qa-label q">Question ${i + 1}</p>
-        <div class="qa-arabic" ${currentLens === 'english' ? 'style="display:none"' : ''}>${unit.questionAr}</div>
-        <p class="qa-english" ${currentLens === 'arabic' ? 'style="display:none"' : ''}>${unit.questionEn}</p>
-        <hr class="qa-divider">
-        <p class="qa-label a">Answer</p>
-        <div class="qa-arabic" ${currentLens === 'english' ? 'style="display:none"' : ''}>${unit.answerAr}</div>
-        <p class="qa-english" ${currentLens === 'arabic' ? 'style="display:none"' : ''}>${unit.answerEn}</p>
-      `;
-      container.appendChild(div);
-    });
-  }
-}
-
-function renderExportContent(text) {
-  const container = document.getElementById('export-content');
-  container.innerHTML = '';
-
-  const getUnits = (t) => {
-    if (t.type === 'poetry') return t.content.map((u,i) => ({ id: `line_${i+1}`, label: `Line ${u.lineNum}`, arabic: u.arabic.replace(/\n/g,'\n'), english: u.english.replace(/\n/g,'\n') }));
-    if (t.type === 'prose_chaptered') return t.chapters.flatMap(ch => ch.blocks.map((b,i) => ({ id: b.id, label: `${ch.titleEn} — Block ${i+1}`, arabic: b.arabic, english: b.english })));
-    if (t.type === 'prose_continuous') return t.blocks.map((b,i) => ({ id: b.id, label: `Block ${i+1}`, arabic: b.arabic, english: b.english }));
-    if (t.type === 'qa') return t.units.map((u,i) => ({ id: u.id, label: `Q&A Unit ${i+1}`, arabic: u.questionAr + '\n' + u.answerAr, english: u.questionEn + '\n' + u.answerEn }));
-    return [];
-  };
-
-  getUnits(text).forEach(unit => {
-    const div = document.createElement('div');
-    div.className = 'export-unit';
-    div.id = 'export-unit-' + unit.id;
-    div.innerHTML = `
-      <div class="export-unit-header" onclick="toggleExport('${unit.id}', this.parentElement)">
-        <input type="checkbox" class="export-checkbox" id="chk-${unit.id}" aria-label="Select ${unit.label}" onclick="event.stopPropagation(); toggleExport('${unit.id}', this.closest('.export-unit'))">
-        <span class="export-unit-label">${unit.label}</span>
-      </div>
-      <div class="export-unit-body">
-        <div class="prose-ar" style="font-size:1.1rem;margin-bottom:0.6rem;">${unit.arabic.replace(/\n/g,'<br>')}</div>
-        <div class="prose-en" style="font-style:italic;font-size:0.88rem;">${unit.english.replace(/\n/g,'<br>')}</div>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-}
-
-/* ── Mode & Lens ─────────────────────────────────────────── */
-function setMode(mode) {
-  currentMode = mode;
-  document.getElementById('reading-mode').style.display = mode === 'reading' ? 'block' : 'none';
-  document.getElementById('export-mode').style.display = mode === 'export' ? 'block' : 'none';
-  document.getElementById('btn-read').classList.toggle('active', mode === 'reading');
-  document.getElementById('btn-export').classList.toggle('active', mode === 'export');
-}
-
-function updateLens(value) {
-  currentLens = value;
-  if (currentText) renderReadingContent(currentText);
-}
-
-/* ── Export selection ────────────────────────────────────── */
-function toggleExport(id, el) {
-  const chk = document.getElementById('chk-' + id);
-  if (selectedExportIds.has(id)) {
-    selectedExportIds.delete(id);
-    chk.checked = false;
-    el.classList.remove('selected');
-  } else {
-    selectedExportIds.add(id);
-    chk.checked = true;
-    el.classList.add('selected');
-  }
-  updateSelectedCount();
-}
-
-function selectAllExport() {
-  document.querySelectorAll('.export-unit').forEach(el => {
-    const chk = el.querySelector('.export-checkbox');
-    const id = chk.id.replace('chk-', '');
-    selectedExportIds.add(id);
-    chk.checked = true;
-    el.classList.add('selected');
-  });
-  updateSelectedCount();
-}
-
-function clearExport() {
-  selectedExportIds.clear();
-  document.querySelectorAll('.export-unit').forEach(el => {
-    const chk = el.querySelector('.export-checkbox');
-    chk.checked = false;
-    el.classList.remove('selected');
-  });
-  updateSelectedCount();
-}
-
-function updateSelectedCount() {
-  const n = selectedExportIds.size;
-  document.getElementById('selected-count').textContent = `${n} unit${n !== 1 ? 's' : ''} selected`;
-}
-
-/* ── Search ──────────────────────────────────────────────── */
-function handleSearch(query) {
-  if (!query.trim()) return;
-  // Fuzzy match across text names
-  const q = query.toLowerCase();
-  for (const [cat, data] of Object.entries(LIBRARY)) {
-    for (const text of data.texts) {
-      if (text.nameEn.toLowerCase().includes(q) || text.nameAr.includes(query) || text.author.toLowerCase().includes(q)) {
-        showArchive(cat);
-        return;
-      }
-    }
-  }
-}
-
-/* ── Download mock ───────────────────────────────────────── */
-function handleDownload() {
-  showToast("Study sheet generated — download started");
-}
-
-/* ── Toast ───────────────────────────────────────────────── */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-/* ── Pill helper (needed in archive render) ── */
-function flCatPill(text) {
-  return `<span class="fl-cat-pill">${text}</span>`;
-}
-</script>
+<!-- ═══ SCRIPTS ═════════════════════════════════════════════ -->
+<script src="mutoon.js"></script>
 </body>
 </html>
