@@ -670,7 +670,7 @@ function updateReadingProgressBar() {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SECTION 12: CUSTOMIZE PREVIEW
+   SECTION 12: CUSTOMIZE PREVIEW (FIXED)
    Live preview of export layout/footnote choices.
    ────────────────────────────────────────────────────────── */
 function updateCustomizePreview() {
@@ -698,77 +698,127 @@ function updateCustomizePreview() {
     return;
   }
 
-  let arHtml = '', enHtml = '';
   let footnoteCounter = 0;
   const endnotes = [];
 
-  units.forEach(unit => {
-    const footnotes = unit.footnotes || [];
-    if (layout === 'interleaved') {
-      arHtml += `<div style="margin-bottom:1.2rem;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
-      enHtml += `<div style="margin-bottom:1.2rem;">${escapeHtml(unit.english).replace(/\n/g, '<br>')}`;
-      if (footnotesMode === 'inline' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
+  // ── Build preview HTML based on layout ──
+  if (layout === 'parallel') {
+    // Parallel: English left, Arabic right
+    let arHtml = '',
+      enHtml = '';
+    units.forEach(unit => {
+      const fns = unit.footnotes || [];
+      arHtml += `<div>${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+      let enText = escapeHtml(unit.english).replace(/\n/g, '<br>');
+      if (footnotesMode === 'inline' && fns.length > 0) {
+        fns.forEach(fn => {
           footnoteCounter++;
-          enHtml += `<br><span class="prose-footnote-inline"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
+          enText +=
+            `<br><span class="prose-footnote-inline" style="display:block;font-size:0.8rem;color:#666;margin-top:0.2rem;"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
         });
-      } else if (footnotesMode === 'endnotes' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
+      } else if (footnotesMode === 'endnotes' && fns.length > 0) {
+        fns.forEach(fn => {
           footnoteCounter++;
-          enHtml += ` <sup>[${footnoteCounter}]</sup>`;
+          enText += ` <sup>[${footnoteCounter}]</sup>`;
           endnotes.push({ num: footnoteCounter, text: fn.text });
         });
       }
-      enHtml += '</div>';
-    } else {
-      arHtml += `<div style="margin-bottom:1.2rem;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
-      enHtml += `<div style="margin-bottom:1.2rem;">${escapeHtml(unit.english).replace(/\n/g, '<br>')}`;
-      if (footnotesMode === 'inline' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
-          footnoteCounter++;
-          enHtml += `<br><span class="prose-footnote-inline"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
-        });
-      } else if (footnotesMode === 'endnotes' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
-          footnoteCounter++;
-          enHtml += ` <sup>[${footnoteCounter}]</sup>`;
-          endnotes.push({ num: footnoteCounter, text: fn.text });
-        });
-      }
-      enHtml += '</div>';
-    }
-  });
+      enHtml += `<div>${enText}</div>`;
+    });
 
-  if (layout === 'arabic-only') {
-    previewAr.innerHTML = arHtml;
-    previewEn.innerHTML = '';
-    previewEn.style.display = 'none';
-    previewContent.style.gridTemplateColumns = '1fr';
-  } else if (layout === 'english-only') {
-    previewAr.innerHTML = '';
-    previewAr.style.display = 'none';
+    // Place English in left column, Arabic in right column by setting order
     previewEn.innerHTML = enHtml;
-    previewContent.style.gridTemplateColumns = '1fr';
-  } else if (layout === 'interleaved') {
-    previewAr.style.display = '';
-    previewEn.style.display = '';
-    previewContent.style.display = 'block';
     previewAr.innerHTML = arHtml;
-    previewEn.innerHTML = enHtml;
-    previewContent.style.gridTemplateColumns = '1fr';
-  } else {
+    previewAr.style.order = '2';   // move to right
+    previewEn.style.order = '1';   // move to left
     previewAr.style.display = '';
     previewEn.style.display = '';
     previewContent.style.display = 'grid';
-    previewAr.innerHTML = arHtml;
-    previewEn.innerHTML = enHtml;
     previewContent.style.gridTemplateColumns = '1fr 1fr';
+    previewContent.classList.remove('preview-interleaved');
+
+  } else if (layout === 'interleaved') {
+    // Interleaved: Arabic then English sequentially
+    let combinedHtml = '';
+    units.forEach(unit => {
+      const fns = unit.footnotes || [];
+      combinedHtml +=
+        `<div style="margin-bottom:0.8rem;font-family:'Noto Naskh Arabic','Scheherazade New',serif;font-size:1.1rem;line-height:2;text-align:right;direction:rtl;color:#1e2b3c;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+      let enText = escapeHtml(unit.english).replace(/\n/g, '<br>');
+      if (footnotesMode === 'inline' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          enText +=
+            `<br><span style="font-size:0.8rem;color:#666;"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
+        });
+      } else if (footnotesMode === 'endnotes' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          enText += ` <sup>[${footnoteCounter}]</sup>`;
+          endnotes.push({ num: footnoteCounter, text: fn.text });
+        });
+      }
+      combinedHtml +=
+        `<div style="margin-bottom:1.2rem;font-style:italic;color:#444;padding-left:0.5rem;border-left:3px solid #e5ded4;padding-left:0.8rem;">${enText}</div>`;
+    });
+
+    previewAr.innerHTML = combinedHtml;
+    previewEn.innerHTML = '';
+    previewAr.style.display = '';
+    previewEn.style.display = 'none';
+    previewContent.style.display = 'block';
+    previewContent.style.gridTemplateColumns = '1fr';
+    previewContent.classList.add('preview-interleaved');
+
+  } else if (layout === 'arabic-only') {
+    let html = '';
+    units.forEach(unit => {
+      html +=
+        `<div style="margin-bottom:1.2rem;font-family:'Noto Naskh Arabic','Scheherazade New',serif;font-size:1.1rem;line-height:2;text-align:right;direction:rtl;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+    });
+    previewAr.innerHTML = html;
+    previewEn.innerHTML = '';
+    previewAr.style.display = '';
+    previewEn.style.display = 'none';
+    previewContent.style.display = 'block';
+    previewContent.style.gridTemplateColumns = '1fr';
+    previewContent.classList.remove('preview-interleaved');
+
+  } else if (layout === 'english-only') {
+    let html = '';
+    units.forEach(unit => {
+      let txt = escapeHtml(unit.english).replace(/\n/g, '<br>');
+      const fns = unit.footnotes || [];
+      if (footnotesMode === 'inline' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          txt +=
+            `<br><span style="font-size:0.8rem;color:#666;"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
+        });
+      } else if (footnotesMode === 'endnotes' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          txt += ` <sup>[${footnoteCounter}]</sup>`;
+          endnotes.push({ num: footnoteCounter, text: fn.text });
+        });
+      }
+      html += `<div style="margin-bottom:1.2rem;font-style:italic;color:#444;">${txt}</div>`;
+    });
+    previewAr.innerHTML = '';
+    previewEn.innerHTML = html;
+    previewAr.style.display = 'none';
+    previewEn.style.display = '';
+    previewContent.style.display = 'block';
+    previewContent.style.gridTemplateColumns = '1fr';
+    previewContent.classList.remove('preview-interleaved');
   }
 
+  // ── Endnotes ──
   if (footnotesMode === 'endnotes' && endnotes.length > 0) {
     let endnotesHtml = '<div class="print-endnotes-title">Notes</div>';
     endnotes.forEach(en => {
-      endnotesHtml += `<div class="print-endnote-item"><strong>[${en.num}]</strong> ${escapeHtml(en.text)}</div>`;
+      endnotesHtml +=
+        `<div class="print-endnote-item"><strong>[${en.num}]</strong> ${escapeHtml(en.text)}</div>`;
     });
     previewEndnotes.innerHTML = endnotesHtml;
     previewEndnotes.style.display = 'block';
@@ -776,9 +826,13 @@ function updateCustomizePreview() {
     previewEndnotes.style.display = 'none';
   }
 
+  // ── Update print content ──
   updatePrintContent(units, layout, footnotesMode);
 }
 
+/* ──────────────────────────────────────────────────────────
+   SECTION 13: PRINT CONTENT (FIXED)
+   ────────────────────────────────────────────────────────── */
 function updatePrintContent(units, layout, footnotesMode) {
   const printTitle = document.getElementById('print-preview-title');
   const printContent = document.getElementById('print-preview-content');
@@ -787,69 +841,110 @@ function updatePrintContent(units, layout, footnotesMode) {
 
   printTitle.textContent = STATE.currentText ? STATE.currentText.nameEn : '';
 
-  let arHtml = '', enHtml = '';
   let footnoteCounter = 0;
   const endnotes = [];
 
-  units.forEach(unit => {
-    const footnotes = unit.footnotes || [];
-    if (layout === 'interleaved') {
-      arHtml += `<div style="margin-bottom:0.8rem;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
-      enHtml += `<div style="margin-bottom:1rem;">${escapeHtml(unit.english).replace(/\n/g, '<br>')}`;
-      if (footnotesMode === 'inline' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
+  // ── Build print HTML ──
+  if (layout === 'parallel') {
+    // Parallel: English left, Arabic right
+    let arHtml = '',
+      enHtml = '';
+    units.forEach(unit => {
+      const fns = unit.footnotes || [];
+      arHtml += `<div>${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+      let enText = escapeHtml(unit.english).replace(/\n/g, '<br>');
+      if (footnotesMode === 'inline' && fns.length > 0) {
+        fns.forEach(fn => {
           footnoteCounter++;
-          enHtml += `<br><span class="print-footnote"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
+          enText +=
+            `<br><span class="print-footnote" style="font-size:9pt;color:#666;"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
         });
-      } else if (footnotesMode === 'endnotes' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
+      } else if (footnotesMode === 'endnotes' && fns.length > 0) {
+        fns.forEach(fn => {
           footnoteCounter++;
-          enHtml += ` <sup>[${footnoteCounter}]</sup>`;
+          enText += ` <sup>[${footnoteCounter}]</sup>`;
           endnotes.push({ num: footnoteCounter, text: fn.text });
         });
       }
-      enHtml += '</div>';
-    } else {
-      arHtml += `<div style="margin-bottom:0.8rem;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
-      enHtml += `<div style="margin-bottom:1rem;">${escapeHtml(unit.english).replace(/\n/g, '<br>')}`;
-      if (footnotesMode === 'inline' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
-          footnoteCounter++;
-          enHtml += `<br><span class="print-footnote"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
-        });
-      } else if (footnotesMode === 'endnotes' && footnotes.length > 0) {
-        footnotes.forEach(fn => {
-          footnoteCounter++;
-          enHtml += ` <sup>[${footnoteCounter}]</sup>`;
-          endnotes.push({ num: footnoteCounter, text: fn.text });
-        });
-      }
-      enHtml += '</div>';
-    }
-  });
+      enHtml += `<div>${enText}</div>`;
+    });
+    printContent.innerHTML =
+      `<div class="preview-col en" style="grid-column:1/2;font-size:10pt;font-style:italic;color:#444;">${enHtml}</div><div class="preview-col ar" style="grid-column:2/3;font-family:'Noto Naskh Arabic',serif;font-size:11pt;line-height:2;text-align:right;direction:rtl;">${arHtml}</div>`;
+    printContent.style.display = 'grid';
+    printContent.style.gridTemplateColumns = '1fr 1fr';
+    printContent.classList.remove('preview-interleaved');
 
-  if (layout === 'arabic-only') {
-    printContent.innerHTML = `<div class="preview-col ar" style="grid-column:1/-1">${arHtml}</div>`;
-    printContent.style.gridTemplateColumns = '1fr';
-    printContent.classList.remove('preview-interleaved');
-  } else if (layout === 'english-only') {
-    printContent.innerHTML = `<div class="preview-col en" style="grid-column:1/-1">${enHtml}</div>`;
-    printContent.style.gridTemplateColumns = '1fr';
-    printContent.classList.remove('preview-interleaved');
   } else if (layout === 'interleaved') {
-    printContent.innerHTML = `<div class="preview-col ar">${arHtml}</div><div class="preview-col en">${enHtml}</div>`;
+    let combined = '';
+    units.forEach(unit => {
+      const fns = unit.footnotes || [];
+      combined +=
+        `<div style="margin-bottom:0.6rem;font-family:'Noto Naskh Arabic',serif;font-size:11pt;line-height:2;text-align:right;direction:rtl;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+      let enText = escapeHtml(unit.english).replace(/\n/g, '<br>');
+      if (footnotesMode === 'inline' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          enText +=
+            `<br><span style="font-size:9pt;color:#666;"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
+        });
+      } else if (footnotesMode === 'endnotes' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          enText += ` <sup>[${footnoteCounter}]</sup>`;
+          endnotes.push({ num: footnoteCounter, text: fn.text });
+        });
+      }
+      combined +=
+        `<div style="margin-bottom:1rem;font-size:10pt;font-style:italic;color:#444;padding-left:0.5rem;border-left:2px solid #ddd6cc;padding-left:0.8rem;">${enText}</div>`;
+    });
+    printContent.innerHTML = combined;
+    printContent.style.display = 'block';
     printContent.style.gridTemplateColumns = '1fr';
     printContent.classList.add('preview-interleaved');
-  } else {
-    printContent.innerHTML = `<div class="preview-col ar">${arHtml}</div><div class="preview-col en">${enHtml}</div>`;
-    printContent.style.gridTemplateColumns = '1fr 1fr';
+
+  } else if (layout === 'arabic-only') {
+    let html = '';
+    units.forEach(unit => {
+      html +=
+        `<div style="margin-bottom:0.8rem;font-family:'Noto Naskh Arabic',serif;font-size:11pt;line-height:2;text-align:right;direction:rtl;">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+    });
+    printContent.innerHTML = html;
+    printContent.style.display = 'block';
+    printContent.style.gridTemplateColumns = '1fr';
+    printContent.classList.remove('preview-interleaved');
+
+  } else if (layout === 'english-only') {
+    let html = '';
+    units.forEach(unit => {
+      let txt = escapeHtml(unit.english).replace(/\n/g, '<br>');
+      const fns = unit.footnotes || [];
+      if (footnotesMode === 'inline' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          txt +=
+            `<br><span style="font-size:9pt;color:#666;"><sup>${footnoteCounter}</sup> ${escapeHtml(fn.text)}</span>`;
+        });
+      } else if (footnotesMode === 'endnotes' && fns.length > 0) {
+        fns.forEach(fn => {
+          footnoteCounter++;
+          txt += ` <sup>[${footnoteCounter}]</sup>`;
+          endnotes.push({ num: footnoteCounter, text: fn.text });
+        });
+      }
+      html += `<div style="margin-bottom:0.8rem;font-size:10pt;font-style:italic;color:#444;">${txt}</div>`;
+    });
+    printContent.innerHTML = html;
+    printContent.style.display = 'block';
+    printContent.style.gridTemplateColumns = '1fr';
     printContent.classList.remove('preview-interleaved');
   }
 
+  // ── Endnotes ──
   if (footnotesMode === 'endnotes' && endnotes.length > 0) {
     let endnotesHtml = '<div class="print-endnotes-title">Notes</div>';
     endnotes.forEach(en => {
-      endnotesHtml += `<div class="print-endnote-item"><strong>[${en.num}]</strong> ${escapeHtml(en.text)}</div>`;
+      endnotesHtml +=
+        `<div class="print-endnote-item"><strong>[${en.num}]</strong> ${escapeHtml(en.text)}</div>`;
     });
     if (printEndnotes) {
       printEndnotes.innerHTML = endnotesHtml;
@@ -868,8 +963,7 @@ function getSelectedUnits() {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SECTION 13: EXPORT / DOWNLOAD
-   PDF (print), DOCX, Markdown, Clipboard.
+   SECTION 14: EXPORT / DOWNLOAD (FIXED parallel column order)
    ────────────────────────────────────────────────────────── */
 function generateDocx(units, layout, footnotesMode) {
   let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
@@ -882,7 +976,7 @@ function generateDocx(units, layout, footnotesMode) {
 .endnotes-title{font-size:12pt;font-weight:bold;margin-top:1cm;border-bottom:1px solid #999}
 .endnote{font-size:9pt;margin-bottom:.2cm}
 table{width:100%;border-collapse:collapse}td{vertical-align:top;padding:.3cm}
-td.ar-col{width:50%;border-right:1px solid #ccc}td.en-col{width:50%}
+td.ar-col{width:50%;border-left:1px solid #ccc}td.en-col{width:50%}
 </style></head><body>
 <div class="title">${escapeHtml(STATE.currentText.nameEn)}</div>
 <div class="author">${escapeHtml(STATE.currentText.author)}</div>`;
@@ -899,10 +993,11 @@ td.ar-col{width:50%;border-right:1px solid #ccc}td.en-col{width:50%}
       html += '</div><br>';
     } else if (layout === 'parallel') {
       if (i === 0) html += '<table>';
-      html += `<tr><td class="ar-col"><div class="ar">${escapeHtml(unit.arabic).replace(/\n/g,'<br>')}</div></td><td class="en-col"><div class="en">${escapeHtml(unit.english).replace(/\n/g,'<br>')}`;
+      // English left (col 1), Arabic right (col 2)
+      html += `<tr><td class="en-col"><div class="en">${escapeHtml(unit.english).replace(/\n/g,'<br>')}`;
       if (footnotesMode === 'inline') fns.forEach(fn => { fc++; html += `<br><span class="footnote"><sup>${fc}</sup> ${escapeHtml(fn.text)}</span>`; });
       else if (footnotesMode === 'endnotes') fns.forEach(fn => { fc++; html += ` <sup>[${fc}]</sup>`; endnotes.push({ num: fc, text: fn.text }); });
-      html += '</div></td></tr>';
+      html += `</div></td><td class="ar-col"><div class="ar">${escapeHtml(unit.arabic).replace(/\n/g,'<br>')}</div></td></tr>`;
     } else if (layout === 'arabic-only') {
       html += `<div class="ar">${escapeHtml(unit.arabic).replace(/\n/g,'<br>')}</div><br>`;
     } else if (layout === 'english-only') {
@@ -1038,7 +1133,7 @@ async function handleDownload() {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SECTION 14: UTILITIES
+   SECTION 15: UTILITIES
    Helper functions used throughout.
    ────────────────────────────────────────────────────────── */
 function escapeHtml(str) {
@@ -1066,7 +1161,7 @@ function showToast(msg) {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SECTION 15: EVENT BINDINGS
+   SECTION 16: EVENT BINDINGS
    Wire up all DOM event listeners.
    ────────────────────────────────────────────────────────── */
 function bindEvents() {
@@ -1141,7 +1236,7 @@ function bindEvents() {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SECTION 16: INITIALIZATION
+   SECTION 17: INITIALIZATION
    Load data, bind events, render home page.
    ────────────────────────────────────────────────────────── */
 (async function init() {
