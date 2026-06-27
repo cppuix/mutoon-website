@@ -4,7 +4,6 @@
    Loads data from mutoon-data.json (with embedded fallback).
    ═══════════════════════════════════════════════════════════ */
 
-/* ──────────────────────────────────────────────────────────
    SECTION 1: DATA LAYER
    Load library data from external JSON or use embedded fallback.
    ────────────────────────────────────────────────────────── */
@@ -132,7 +131,6 @@ function getFallbackData() {
   };
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 2: STATE MANAGEMENT
    Centralized application state.
    ────────────────────────────────────────────────────────── */
@@ -144,7 +142,6 @@ const STATE = {
   selectedExportIds: new Set()
 };
 
-/* ──────────────────────────────────────────────────────────
    SECTION 3: PERSISTENCE (localStorage)
    Bookmarks and reading progress survive page reloads.
    ────────────────────────────────────────────────────────── */
@@ -163,7 +160,6 @@ function saveReadingProgress(textId, progress) {
   localStorage.setItem('mutoon_progress_' + textId, JSON.stringify(progress));
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 4: NAVIGATION
    Page routing: home, archive, reader, customize.
    ────────────────────────────────────────────────────────── */
@@ -256,7 +252,6 @@ function openReader(category, textId) {
   }, 300);
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 5: HOME PAGE CATEGORIES
    Build category cards from loaded data.
    ────────────────────────────────────────────────────────── */
@@ -285,7 +280,6 @@ function buildHomeCategories() {
   }
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 6: RENDERING
    Render reading content and export content based on text type.
    ────────────────────────────────────────────────────────── */
@@ -447,7 +441,6 @@ function getExportUnits(text) {
   return [];
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 7: MODE & LENS
    Toggle between reading/export modes and language views.
    ────────────────────────────────────────────────────────── */
@@ -476,7 +469,6 @@ function applyLens(value) {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 8: EXPORT SELECTION
    Checkbox logic for selecting units to export.
    ────────────────────────────────────────────────────────── */
@@ -519,7 +511,6 @@ function updateSelectedCount() {
   document.getElementById('selected-count').textContent = `${n} unit${n !== 1 ? 's' : ''} selected`;
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 9: SEARCH
    Relevance-scored search across text names, authors, keywords.
    ────────────────────────────────────────────────────────── */
@@ -573,7 +564,6 @@ function handleSearch(query) {
   resultsContainer.classList.add('active');
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 10: BOOKMARKS
    Add/remove bookmarks, render bookmarks panel.
    ────────────────────────────────────────────────────────── */
@@ -650,7 +640,6 @@ function renderBookmarksList() {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 11: READING PROGRESS
    Scroll-based progress bar, persisted per text.
    ────────────────────────────────────────────────────────── */
@@ -669,7 +658,6 @@ function updateReadingProgressBar() {
   saveReadingProgress(STATE.currentText.id, progress);
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 12: CUSTOMIZE PREVIEW (FIXED)
    Live preview of export layout/footnote choices.
    ────────────────────────────────────────────────────────── */
@@ -830,7 +818,6 @@ function updateCustomizePreview() {
   updatePrintContent(units, layout, footnotesMode);
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 13: PRINT CONTENT (FIXED)
    ────────────────────────────────────────────────────────── */
 function updatePrintContent(units, layout, footnotesMode) {
@@ -962,7 +949,6 @@ function getSelectedUnits() {
   return allUnits.filter(u => STATE.selectedExportIds.has(u.id));
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 14: EXPORT / DOWNLOAD (FIXED parallel column order)
    ────────────────────────────────────────────────────────── */
 function generateDocx(units, layout, footnotesMode) {
@@ -1132,7 +1118,6 @@ async function handleDownload() {
   }
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 15: UTILITIES
    Helper functions used throughout.
    ────────────────────────────────────────────────────────── */
@@ -1160,7 +1145,6 @@ function showToast(msg) {
   t._timeout = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 16: EVENT BINDINGS
    Wire up all DOM event listeners.
    ────────────────────────────────────────────────────────── */
@@ -1235,7 +1219,6 @@ function bindEvents() {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
    SECTION 17: INITIALIZATION
    Load data, bind events, render home page.
    ────────────────────────────────────────────────────────── */
