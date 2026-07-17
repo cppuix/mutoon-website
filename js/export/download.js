@@ -1,9 +1,99 @@
-// Generated module
+// js/export/download.js
 import { store } from '../state/store.js';
 import { downloadBlob, escapeHtml, showToast } from '../utils/dom.js';
-import { getSelectedUnits } from '../ui/customize.js';
+import { fetchQuran } from '../utils/quran.js';
 
-function generateDocx(units, layout, footnotesMode) {
+// Helper to resolve Arabic text from parts
+async function resolveUnitArabic(unit) {
+  if (unit.parts && unit.parts.length) {
+    let fullText = '';
+    for (const part of unit.parts) {
+      if (part.type === 'text') {
+        fullText += part.content;
+      } else if (part.type === 'quran') {
+        const verses = await fetchQuran(part.surah, part.ayah_start, part.ayah_end);
+        // verses is now an array of { number, text }
+        const verseTexts = verses.map(v => v.text);
+        fullText += verseTexts.join(' ');
+      }
+    }
+    return fullText;
+  }
+  return unit.arabic || '';
+}
+
+// Get selected units (from customize.js – we duplicate logic here for now)
+function getSelectedUnits() {
+  const text = store.state.currentText;
+  if (!text) return [];
+
+  const allUnits = [];
+  if (text.type === 'poetry') {
+    text.content.forEach((unit, i) => {
+      allUnits.push({
+        id: `line_${i + 1}`,
+        label: `Line ${unit.lineNum}`,
+        arabic: unit.arabic,
+        english: unit.english,
+        footnotes: unit.footnotes || []
+      });
+    });
+  } else if (text.type === 'prose_chaptered') {
+    text.chapters.forEach((chapter, ci) => {
+      chapter.blocks.forEach((block, bi) => {
+        const unit = {
+          id: block.id || `block_${ci}_${bi}`,
+          label: `${chapter.titleEn} — Block ${bi + 1}`,
+          english: block.english,
+          footnotes: block.footnotes || []
+        };
+        if (block.parts) {
+          unit.parts = block.parts;
+          unit.arabic = '';
+        } else {
+          unit.arabic = block.arabic || '';
+        }
+        allUnits.push(unit);
+      });
+    });
+  } else if (text.type === 'prose_continuous') {
+    text.blocks.forEach((block, i) => {
+      const unit = {
+        id: block.id || `block_${i}`,
+        label: `Block ${i + 1}`,
+        english: block.english,
+        footnotes: block.footnotes || []
+      };
+      if (block.parts) {
+        unit.parts = block.parts;
+        unit.arabic = '';
+      } else {
+        unit.arabic = block.arabic || '';
+      }
+      allUnits.push(unit);
+    });
+  } else if (text.type === 'qa') {
+    text.units.forEach((unit, i) => {
+      allUnits.push({
+        id: unit.id || `qa_${i}`,
+        label: `Q&A Unit ${i + 1}`,
+        arabic: unit.questionAr + '\n' + unit.answerAr,
+        english: unit.questionEn + '\n' + unit.answerEn,
+        footnotes: unit.footnotes || []
+      });
+    });
+  }
+
+  return allUnits.filter(unit => store.state.selectedExportIds.has(unit.id));
+}
+
+async function generateDocx(units, layout, footnotesMode) {
+  // Resolve Arabic texts first
+  const resolvedUnits = await Promise.all(units.map(async (unit) => ({
+    ...unit,
+    arabic: await resolveUnitArabic(unit)
+  })));
+
   let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head><meta charset="UTF-8"><style>
 @page{size:A4;margin:2cm}body{font-family:'Libre Baskerville',Georgia,serif;font-size:11pt;line-height:1.8}
@@ -21,25 +111,25 @@ td.ar-col{width:50%;border-left:1px solid #ccc}td.en-col{width:50%}
 
   let fc = 0, endnotes = [];
 
-  units.forEach((unit, i) => {
+  resolvedUnits.forEach((unit, i) => {
     const fns = unit.footnotes || [];
     if (layout === 'interleaved') {
-      html += `<div class="ar">${escapeHtml(unit.arabic).replace(/\n/g,'<br>')}</div>`;
-      html += `<div class="en">${escapeHtml(unit.english).replace(/\n/g,'<br>')}`;
+      html += `<div class="ar">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div>`;
+      html += `<div class="en">${escapeHtml(unit.english).replace(/\n/g, '<br>')}`;
       if (footnotesMode === 'inline') fns.forEach(fn => { fc++; html += `<br><span class="footnote"><sup>${fc}</sup> ${escapeHtml(fn.text)}</span>`; });
       else if (footnotesMode === 'endnotes') fns.forEach(fn => { fc++; html += ` <sup>[${fc}]</sup>`; endnotes.push({ num: fc, text: fn.text }); });
       html += '</div><br>';
     } else if (layout === 'parallel') {
       if (i === 0) html += '<table>';
-      // English left (col 1), Arabic right (col 2)
-      html += `<tr><td class="en-col"><div class="en">${escapeHtml(unit.english).replace(/\n/g,'<br>')}`;
+      // English left, Arabic right
+      html += `<tr><td class="en-col"><div class="en">${escapeHtml(unit.english).replace(/\n/g, '<br>')}`;
       if (footnotesMode === 'inline') fns.forEach(fn => { fc++; html += `<br><span class="footnote"><sup>${fc}</sup> ${escapeHtml(fn.text)}</span>`; });
       else if (footnotesMode === 'endnotes') fns.forEach(fn => { fc++; html += ` <sup>[${fc}]</sup>`; endnotes.push({ num: fc, text: fn.text }); });
-      html += `</div></td><td class="ar-col"><div class="ar">${escapeHtml(unit.arabic).replace(/\n/g,'<br>')}</div></td></tr>`;
+      html += `</div></td><td class="ar-col"><div class="ar">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div></td></tr>`;
     } else if (layout === 'arabic-only') {
-      html += `<div class="ar">${escapeHtml(unit.arabic).replace(/\n/g,'<br>')}</div><br>`;
+      html += `<div class="ar">${escapeHtml(unit.arabic).replace(/\n/g, '<br>')}</div><br>`;
     } else if (layout === 'english-only') {
-      html += `<div class="en">${escapeHtml(unit.english).replace(/\n/g,'<br>')}</div><br>`;
+      html += `<div class="en">${escapeHtml(unit.english).replace(/\n/g, '<br>')}</div><br>`;
     }
   });
 
@@ -54,11 +144,17 @@ td.ar-col{width:50%;border-left:1px solid #ccc}td.en-col{width:50%}
   downloadBlob(blob, store.state.currentText.nameEn.replace(/[^a-zA-Z0-9]/g, '_') + '.doc');
 }
 
-function generateMarkdown(units, layout, footnotesMode) {
+async function generateMarkdown(units, layout, footnotesMode) {
+  // Resolve Arabic texts
+  const resolvedUnits = await Promise.all(units.map(async (unit) => ({
+    ...unit,
+    arabic: await resolveUnitArabic(unit)
+  })));
+
   let md = `# ${store.state.currentText.nameEn}\n\n*${store.state.currentText.author}*\n\n---\n\n`;
   let fc = 0, endnotes = [];
 
-  units.forEach(unit => {
+  resolvedUnits.forEach(unit => {
     const fns = unit.footnotes || [];
     if (layout === 'arabic-only') {
       md += `<div dir="rtl" style="font-family:'Noto Naskh Arabic';font-size:1.2em;line-height:2;">\n\n${unit.arabic}\n\n</div>\n\n`;
@@ -80,11 +176,17 @@ function generateMarkdown(units, layout, footnotesMode) {
   return md;
 }
 
-function generateClipboardText(units, layout, footnotesMode) {
+async function generateClipboardText(units, layout, footnotesMode) {
+  // Resolve Arabic texts
+  const resolvedUnits = await Promise.all(units.map(async (unit) => ({
+    ...unit,
+    arabic: await resolveUnitArabic(unit)
+  })));
+
   let text = `${store.state.currentText.nameEn}\n${store.state.currentText.author}\n${'─'.repeat(50)}\n\n`;
   let fc = 0, endnotes = [];
 
-  units.forEach(unit => {
+  resolvedUnits.forEach(unit => {
     const fns = unit.footnotes || [];
     if (layout === 'arabic-only') {
       text += `${unit.arabic}\n\n`;
@@ -152,23 +254,32 @@ async function handleDownload() {
       customizePage.classList.add('active');
     }, 500);
   } else if (format === 'docx') {
-    generateDocx(units, layout, footnotesMode);
+    await generateDocx(units, layout, footnotesMode);
     showToast('DOCX file downloaded');
   } else if (format === 'markdown') {
-    const md = generateMarkdown(units, layout, footnotesMode);
+    const md = await generateMarkdown(units, layout, footnotesMode);
     const blob = new Blob([md], { type: 'text/markdown' });
     downloadBlob(blob, store.state.currentText.nameEn.replace(/[^a-zA-Z0-9]/g, '_') + '.md');
     showToast('Markdown file downloaded');
   } else if (format === 'clipboard') {
-    const text = generateClipboardText(units, layout, footnotesMode);
+    const text = await generateClipboardText(units, layout, footnotesMode);
     try {
       await navigator.clipboard.writeText(text);
       showToast('Copied to clipboard ✓');
     } catch {
-      showToast('Failed to copy — check browser permissions');
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('Copied to clipboard ✓ (fallback)');
+      } catch {
+        showToast('Failed to copy — check browser permissions');
+      }
     }
   }
 }
-
 
 export { handleDownload, generateDocx, generateMarkdown, generateClipboardText };

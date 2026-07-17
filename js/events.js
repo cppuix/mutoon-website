@@ -1,4 +1,4 @@
-// Generated module
+// js/events.js
 import { store } from './state/store.js';
 import { handleSearch } from './ui/search.js';
 import { setMode, updateLens } from './state/actions.js';
@@ -70,7 +70,9 @@ function bindEvents() {
   if (bookmarksOverlay) bookmarksOverlay.addEventListener('click', () => toggleBookmarksPanel(false));
 
   document.querySelectorAll('#layout-options input, #footnote-options input').forEach(radio => {
-    radio.addEventListener('change', updateCustomizePreview);
+    radio.addEventListener('change', async () => {
+      await updateCustomizePreview();
+    });
   });
 
   const downloadButton = document.getElementById('btn-download');

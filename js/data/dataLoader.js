@@ -77,8 +77,31 @@ function getFallbackData() {
           type: "prose_continuous",
           keywords: ["tawheed", "monotheism", "fundamentals", "three principles"],
           blocks: [
-            { id: "usool_01", arabic: "اعْلَمْ رَحِمَكَ اللَّهُ أَنَّهُ يَجِبُ عَلَيْنَا تَعَلُّمُ أَرْبَعِ مَسَائِلَ.", english: "Know, may Allah have mercy on you, that it is obligatory upon us to learn four matters.", footnotes: [] },
-            { id: "usool_02", arabic: "الْأُولَى: الْعِلْمُ؛ وَهُوَ مَعْرِفَةُ اللَّهِ، وَمَعْرِفَةُ نَبِيِّهِ، وَمَعْرِفَةُ دِينِ الْإِسْلَامِ بِالْأَدِلَّةِ.", english: "The first: Knowledge; which is knowing Allah, knowing His Prophet, and knowing the religion of Islam with its evidences.", footnotes: [{ text: "i.e., knowledge of Allah's names, attributes, and actions" }] }
+            { 
+              id: "usool_01", 
+              arabic: "اعْلَمْ رَحِمَكَ اللَّهُ أَنَّهُ يَجِبُ عَلَيْنَا تَعَلُّمُ أَرْبَعِ مَسَائِلَ.", 
+              english: "Know, may Allah have mercy on you, that it is obligatory upon us to learn four matters.", 
+              footnotes: [] 
+            },
+            { 
+              id: "usool_02", 
+              arabic: "الْأُولَى: الْعِلْمُ؛ وَهُوَ مَعْرِفَةُ اللَّهِ، وَمَعْرِفَةُ نَبِيِّهِ، وَمَعْرِفَةُ دِينِ الْإِسْلَامِ بِالْأَدِلَّةِ.", 
+              english: "The first: Knowledge; which is knowing Allah, knowing His Prophet, and knowing the religion of Islam with its evidences.", 
+              footnotes: [{ text: "i.e., knowledge of Allah's names, attributes, and actions" }] 
+            },
+            { 
+              id: "usool_03",
+              // Replaced hardcoded arabic with parts
+              parts: [
+                { type: "text", content: "وَالدَّلِيلُ قَوْلُهُ تَعَالَى: " },
+                { type: "quran", surah: 103, ayah_start: 1, ayah_end: 3 },
+                { type: "text", content: "" }
+              ],
+              english: "And the proof is the saying of the Most High: \"By time, indeed mankind is in loss, except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.\" [Sūrah al-ʿAṣr]",
+              footnotes: [
+                { text: "Sūrah al-ʿAṣr (103:1-3)" }
+              ]
+            }
           ]
         }
       ]

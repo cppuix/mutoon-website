@@ -1,6 +1,7 @@
 // Generated module
 import { store } from '../state/store.js';
 import { escapeHtml, showToast } from '../utils/dom.js';
+import { openReader } from '../navigation/router.js';
 
 function handleSearch(query) {
   const resultsContainer = document.getElementById('search-results');

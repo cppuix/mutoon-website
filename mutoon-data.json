@@ -18,14 +18,21 @@
           "author": "Muḥammad ibn ʿAbd al-Wahhāb",
           "structure": "Continuous Prose — Fundamentals of Faith",
           "type": "prose_continuous",
-          "keywords": ["tawheed", "monotheism", "fundamentals", "three principles"],
+          "keywords": [
+            "tawheed",
+            "monotheism",
+            "fundamentals",
+            "three principles"
+          ],
           "blocks": [
             {
               "id": "usool_01",
               "arabic": "اعْلَمْ رَحِمَكَ اللَّهُ أَنَّهُ يَجِبُ عَلَيْنَا تَعَلُّمُ أَرْبَعِ مَسَائِلَ. الْأُولَى: الْعِلْمُ؛ وَهُوَ مَعْرِفَةُ اللَّهِ، وَمَعْرِفَةُ نَبِيِّهِ، وَمَعْرِفَةُ دِينِ الْإِسْلَامِ بِالْأَدِلَّةِ.",
               "english": "Know, may Allah have mercy on you, that it is obligatory upon us to learn four matters. The first: Knowledge; which is knowing Allah, knowing His Prophet, and knowing the religion of Islam with its evidences.",
               "footnotes": [
-                {"text": "i.e., knowledge of Allah's names, attributes, and actions"}
+                {
+                  "text": "i.e., knowledge of Allah's names, attributes, and actions"
+                }
               ]
             },
             {
@@ -36,10 +43,27 @@
             },
             {
               "id": "usool_03",
-              "arabic": "وَالدَّلِيلُ قَوْلُهُ تَعَالَى: ﴿وَالْعَصْرِ ۝ إِنَّ الْإِنْسَانَ لَفِي خُسْرٍ ۝ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ﴾",
+              "parts": [
+                {
+                  "type": "text",
+                  "content": "وَالدَّلِيلُ قَوْلُهُ تَعَالَى: "
+                },
+                {
+                  "type": "quran",
+                  "surah": 103,
+                  "ayah_start": 1,
+                  "ayah_end": 3
+                },
+                {
+                  "type": "text",
+                  "content": ""
+                }
+              ],
               "english": "And the proof is the saying of the Most High: \"By time, indeed mankind is in loss, except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.\" [Sūrah al-ʿAṣr]",
               "footnotes": [
-                {"text": "Sūrah al-ʿAṣr (103:1-3)"}
+                {
+                  "text": "Sūrah al-ʿAṣr (103:1-3)"
+                }
               ]
             }
           ]
@@ -51,7 +75,12 @@
           "author": "Aḥmad ibn Taymiyyah",
           "structure": "Chaptered Prose — Theological Doctrine",
           "type": "prose_chaptered",
-          "keywords": ["creed", "attributes", "aqeedah", "wasitiyyah"],
+          "keywords": [
+            "creed",
+            "attributes",
+            "aqeedah",
+            "wasitiyyah"
+          ],
           "chapters": [
             {
               "titleAr": "بَابُ صِفَاتِ اللَّهِ تَعَالَى",
@@ -62,7 +91,9 @@
                   "arabic": "وَقَوْلُهُ تَعَالَى: ﴿لَيْسَ كَمِثْلِهِ شَيْءٌ وَهُوَ السَّمِيعُ الْبَصِيرُ﴾ [سُورَةُ الشُّورَى، آيَة ١١]",
                   "english": "And His saying, the Most High: \"There is nothing like unto Him, and He is the All-Hearing, the All-Seeing.\" [Sūrah al-Shūrā, verse 11]",
                   "footnotes": [
-                    {"text": "This verse affirms both tanzīh (transcendence) and ithbāt (affirmation)"}
+                    {
+                      "text": "This verse affirms both tanzīh (transcendence) and ithbāt (affirmation)"
+                    }
                   ]
                 },
                 {
@@ -82,7 +113,9 @@
                   "arabic": "وَمِنَ الْإِيمَانِ بِاللَّهِ: الْإِيمَانُ بِمَلَائِكَتِهِ، وَهُمْ عِبَادٌ مُكْرَمُونَ، لَا يَعْصُونَ اللَّهَ مَا أَمَرَهُمْ وَيَفْعَلُونَ مَا يُؤْمَرُونَ.",
                   "english": "And from belief in Allah is belief in His angels. They are honored servants who do not disobey Allah in what He commands them and they do what they are commanded.",
                   "footnotes": [
-                    {"text": "Cf. Sūrah al-Anbiyā' (21:26-27)"}
+                    {
+                      "text": "Cf. Sūrah al-Anbiyā' (21:26-27)"
+                    }
                   ]
                 }
               ]
@@ -104,7 +137,12 @@
           "author": "Ṭāhā al-Bayqūnī",
           "structure": "Classical Rhymed Poetry — 34 Couplets",
           "type": "poetry",
-          "keywords": ["mustalah", "hadith terminology", "poem", "bayquniyyah"],
+          "keywords": [
+            "mustalah",
+            "hadith terminology",
+            "poem",
+            "bayquniyyah"
+          ],
           "content": [
             {
               "lineNum": 1,
@@ -140,7 +178,11 @@
           "author": "Ibn Ḥajar al-ʿAsqalānī",
           "structure": "Continuous Prose — Hadith Terminology",
           "type": "prose_continuous",
-          "keywords": ["mustalah", "hadith sciences", "ibn hajar"],
+          "keywords": [
+            "mustalah",
+            "hadith sciences",
+            "ibn hajar"
+          ],
           "blocks": [
             {
               "id": "nukhba_01",
@@ -153,7 +195,9 @@
               "arabic": "فَأَجَبْتُهُ إِلَى سُؤَالِهِ رَجَاءَ الِانْدِرَاجِ فِي تِلْكَ الْمَسَالِكِ.",
               "english": "So I responded to his request, hoping to be included among those who have traversed those paths.",
               "footnotes": [
-                {"text": "i.e., the paths of the hadith scholars"}
+                {
+                  "text": "i.e., the paths of the hadith scholars"
+                }
               ]
             }
           ]
@@ -173,14 +217,20 @@
           "author": "Imām al-Ḥaramayn al-Juwaynī",
           "structure": "Continuous Prose — Legal Theory",
           "type": "prose_continuous",
-          "keywords": ["usul al-fiqh", "legal theory", "principles"],
+          "keywords": [
+            "usul al-fiqh",
+            "legal theory",
+            "principles"
+          ],
           "blocks": [
             {
               "id": "waraqat_01",
               "arabic": "هَذِهِ وَرَقَاتٌ تَشْتَمِلُ عَلَى مَعْرِفَةِ فُصُولٍ مِنْ أُصُولِ الْفِقْهِ. وَذَلِكَ مُؤَلَّفٌ مِنْ جُزْأَيْنِ مُفْرَدَيْنِ: أَحَدُهُمَا الْأُصُولُ، وَالْآخَرُ الْفِقْهُ.",
               "english": "These are papers encompassing knowledge of chapters from the principles of jurisprudence. This discipline is composed of two distinct parts: one is the principles (uṣūl), and the other is the jurisprudence (fiqh).",
               "footnotes": [
-                {"text": "Uṣūl: the foundational principles; Fiqh: the derived rulings"}
+                {
+                  "text": "Uṣūl: the foundational principles; Fiqh: the derived rulings"
+                }
               ]
             },
             {
@@ -206,14 +256,21 @@
           "author": "Ibn Ājurrūm al-Ṣanhājī",
           "structure": "Continuous Prose — Arabic Grammar",
           "type": "prose_continuous",
-          "keywords": ["nahw", "grammar", "arabic", "syntax"],
+          "keywords": [
+            "nahw",
+            "grammar",
+            "arabic",
+            "syntax"
+          ],
           "blocks": [
             {
               "id": "ajrum_01",
               "arabic": "الْكَلَامُ: هُوَ اللَّفْظُ الْمُرَكَّبُ الْمُفِيدُ بِالْوَضْعِ. وَأَقْسَامُهُ ثَلَاثَةٌ: اسْمٌ، وَفِعْلٌ، وَحَرْفٌ جَاءَ لِمَعْنًى.",
               "english": "Speech: It is the compounded utterance that conveys a complete meaning according to convention. Its parts are three: a noun (ism), a verb (fiʿl), and a particle (ḥarf) that conveys meaning.",
               "footnotes": [
-                {"text": "By convention (bi-l-waḍʿ) meaning: according to the established usage of the Arabs"}
+                {
+                  "text": "By convention (bi-l-waḍʿ) meaning: according to the established usage of the Arabs"
+                }
               ]
             },
             {
